@@ -1,4 +1,5 @@
 ﻿using FlightsManager.Models;
+using FlightsManager.Models.Vuelos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,15 @@ namespace FlightsManager.DB
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Aerolinea> Aerolineas { get; set; }
+        public DbSet<Avion> Aviones { get; set; }
+        public DbSet<Asiento> Asientos { get; set; }
+        public DbSet<Tarifa> Tarifas { get; set; }
+        public DbSet<Vuelo> Vuelos { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Pais> Paises { get; set; }
+        public DbSet<Aeropuerto> Aeropuertos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

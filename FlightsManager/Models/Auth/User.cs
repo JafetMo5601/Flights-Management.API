@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FlightsManager.Models.Vuelos;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace FlightsManager.Models
@@ -13,5 +14,13 @@ namespace FlightsManager.Models
 
         [Required]
         public string Lastname { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
+        public string PassportNumber { get; set; }
+
+        public Pais? Country { get; set; }
     }
 }
