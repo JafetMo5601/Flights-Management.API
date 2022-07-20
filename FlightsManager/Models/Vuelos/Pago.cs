@@ -24,7 +24,8 @@ namespace FlightsManager.Models.Vuelos
 
         public Reserva Reserva { get; set; }
 
-        public Pasajero Pasajero { get; set; }
+        public User Pasajero { get; set; }
+        public Pais Pais { get; set; }
 
     }
 }

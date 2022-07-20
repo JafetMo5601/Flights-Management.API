@@ -20,7 +20,6 @@ namespace FlightsManager.DB
         public DbSet<Vuelo> Vuelos { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
         public DbSet<Pago> Pagos { get; set; }
-        public DbSet<Pasajero> Pasajeros { get; set; }
         public DbSet<Pais> Paises { get; set; }
         public DbSet<Aeropuerto> Aeropuertos { get; set; }
 

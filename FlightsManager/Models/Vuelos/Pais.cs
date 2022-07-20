@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlightsManager.Models.Vuelos
 {
     public class Pais
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
