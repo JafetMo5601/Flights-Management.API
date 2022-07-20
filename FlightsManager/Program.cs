@@ -17,8 +17,10 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddDbContext<ApplicationDBContext>(
     options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")), ServiceLifetime.Transient);
 
+builder.Services.AddScoped<IPaisRepository, PaisRepository>();
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services.AddScoped<IVuelosRepository, VuelosRepository>();
+
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
