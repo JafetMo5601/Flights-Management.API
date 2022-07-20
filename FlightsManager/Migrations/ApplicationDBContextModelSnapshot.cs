@@ -130,8 +130,11 @@ namespace FlightsManager.Migrations
                     b.Property<int>("NumComprobante")
                         .HasColumnType("int");
 
-                    b.Property<int>("PasajeroId")
+                    b.Property<int>("PaisId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PasajeroId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ReservaId")
                         .HasColumnType("int");
@@ -141,6 +144,8 @@ namespace FlightsManager.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaisId");
 
                     b.HasIndex("PasajeroId");
 
@@ -164,54 +169,6 @@ namespace FlightsManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Paises");
-                });
-
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Pasajero", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaNacimiento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("NumPasaporte")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaisId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PrimerApellido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimerNombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SegundoApellido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SegundoNombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaisId");
-
-                    b.ToTable("Pasajeros");
                 });
 
             modelBuilder.Entity("FlightsManager.Models.Vuelos.Reserva", b =>
@@ -265,6 +222,9 @@ namespace FlightsManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AeropuertoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("AsientoId")
                         .HasColumnType("int");
 
@@ -278,6 +238,8 @@ namespace FlightsManager.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AeropuertoId");
 
                     b.HasIndex("AsientoId");
 
@@ -498,6 +460,12 @@ namespace FlightsManager.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -506,9 +474,15 @@ namespace FlightsManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -541,11 +515,15 @@ namespace FlightsManager.Migrations
 
             modelBuilder.Entity("FlightsManager.Models.Vuelos.Pago", b =>
                 {
-                    b.HasOne("FlightsManager.Models.Vuelos.Pasajero", "Pasajero")
+                    b.HasOne("FlightsManager.Models.Vuelos.Pais", "Pais")
                         .WithMany()
-                        .HasForeignKey("PasajeroId")
+                        .HasForeignKey("PaisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("FlightsManager.Models.User", "Pasajero")
+                        .WithMany()
+                        .HasForeignKey("PasajeroId");
 
                     b.HasOne("FlightsManager.Models.Vuelos.Reserva", "Reserva")
                         .WithMany()
@@ -553,24 +531,21 @@ namespace FlightsManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Pais");
+
                     b.Navigation("Pasajero");
 
                     b.Navigation("Reserva");
                 });
 
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Pasajero", b =>
+            modelBuilder.Entity("FlightsManager.Models.Vuelos.Vuelo", b =>
                 {
-                    b.HasOne("FlightsManager.Models.Vuelos.Pais", "Pais")
+                    b.HasOne("FlightsManager.Models.Vuelos.Aeropuerto", "Aeropuerto")
                         .WithMany()
-                        .HasForeignKey("PaisId")
+                        .HasForeignKey("AeropuertoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pais");
-                });
-
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Vuelo", b =>
-                {
                     b.HasOne("FlightsManager.Models.Vuelos.Asiento", "Asiento")
                         .WithMany()
                         .HasForeignKey("AsientoId")
@@ -594,6 +569,8 @@ namespace FlightsManager.Migrations
                         .HasForeignKey("TarifaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Aeropuerto");
 
                     b.Navigation("Asiento");
 
@@ -653,6 +630,15 @@ namespace FlightsManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlightsManager.Models.User", b =>
+                {
+                    b.HasOne("FlightsManager.Models.Vuelos.Pais", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.Navigation("Country");
                 });
 #pragma warning restore 612, 618
         }
