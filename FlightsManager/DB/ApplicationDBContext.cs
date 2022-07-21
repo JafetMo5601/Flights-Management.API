@@ -22,6 +22,7 @@ namespace FlightsManager.DB
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Pais> Paises { get; set; }
         public DbSet<Aeropuerto> Aeropuertos { get; set; }
+        public DbSet<Horario> Horarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

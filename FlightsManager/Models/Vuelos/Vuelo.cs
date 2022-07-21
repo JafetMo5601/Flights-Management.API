@@ -11,5 +11,6 @@ namespace FlightsManager.Models.Vuelos
         public Tarifa Tarifa { get; set; }
         public Reserva Reserva { get; set; }
         public Aeropuerto Aeropuerto { get; set; }
+        public Horario Horario { get; set; }
     }
 }
