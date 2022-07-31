@@ -140,5 +140,47 @@ namespace FlightsManager.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
             }
         }
+
+        [HttpGet]
+        [Route("horarios")]
+        public async Task<IActionResult> GetHorarios()
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAllHorarios();
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("horario")]
+        public async Task<IActionResult> GetHorarioById(int horarioId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetHorarioId(horarioId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
     }
 }

@@ -36,6 +36,27 @@ namespace FlightsManager.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("paises-except")]
+        public async Task<IActionResult> GetPaisesWithout(string nombrePais)
+        {
+            try
+            {
+                var response = await _paisRepository.GetPaisesExcept(nombrePais);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
 
     }
 }
