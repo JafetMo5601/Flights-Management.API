@@ -20,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(
 builder.Services.AddScoped<IPaisRepository, PaisRepository>();
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services.AddScoped<IVuelosRepository, VuelosRepository>();
+builder.Services.AddScoped<IPaisRepository, PaisRepository>();
 
 
 builder.Services.AddIdentity<User, IdentityRole>()
