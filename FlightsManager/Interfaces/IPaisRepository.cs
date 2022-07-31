@@ -5,5 +5,6 @@ namespace FlightsManager.Interfaces
     public interface IPaisRepository
     {
         Task<Pais> GetPais(int paisId);
+        Task<List<Pais>> GetPaises();
     }
 }
