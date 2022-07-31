@@ -15,5 +15,7 @@ namespace FlightsManager.Interfaces
         Task<List<Aeropuerto>?> GetAllAeropuertos();
         Task<Tarifa?> GetTarifaById(int tarifaId);
         Task<List<Tarifa>?> GetAllTarifas();
+        Task<Horario?> GetHorarioId(int horarioId);
+        Task<List<Horario>?> GetAllHorarios();
     }
 }

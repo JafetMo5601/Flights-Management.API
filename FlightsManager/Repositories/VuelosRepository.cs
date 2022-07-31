@@ -171,5 +171,34 @@ namespace FlightsManager.Repositories
 
             return null;
         }
+
+        public async Task<Horario?> GetHorarioId(int horarioId)
+        {
+            var horario = await (from h in _context.Horarios
+                                where h.Id == horarioId
+                                select h)
+                                .FirstAsync();
+
+            if (horario != null)
+            {
+                return horario;
+            }
+
+            return null;
+        }
+
+        public async Task<List<Horario>?> GetAllHorarios()
+        {
+            var horarios = await (from x in _context.Horarios
+                                 select x)
+                                 .ToListAsync();
+
+            if (horarios != null && horarios.Any())
+            {
+                return horarios;
+            }
+
+            return null;
+        }
     }
 }
