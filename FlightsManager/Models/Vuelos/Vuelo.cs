@@ -7,10 +7,16 @@ namespace FlightsManager.Models.Vuelos
         [Key]
         public int Id { get; set; }
         public Avion Avion { get; set; }
-        public Asiento Asiento { get; set; }
-        public Tarifa Tarifa { get; set; }
-        public Reserva Reserva { get; set; }
-        public Aeropuerto Aeropuerto { get; set; }
+        
+        [Required]
+        public Aeropuerto AeropuertoPartida { get; set; }
+        
+        [Required]
+        public Aeropuerto AeropuertoDestino { get; set; }
+
         public Horario Horario { get; set; }
+        public Tarifa Tarifa { get; set; }
+
+
     }
 }

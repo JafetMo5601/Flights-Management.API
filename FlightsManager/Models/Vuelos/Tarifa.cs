@@ -13,5 +13,7 @@ namespace FlightsManager.Models.Vuelos
         [Required]
         public float Precio { get; set; }
 
+        [Required]
+        public Asiento Asiento { get; set; }
     }
 }

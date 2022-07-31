@@ -4,7 +4,6 @@ namespace FlightsManager.Models.Vuelos
 {
     public class Asiento
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
