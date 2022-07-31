@@ -129,50 +129,6 @@ namespace FlightsManager.Migrations
                     b.ToTable("Horarios");
                 });
 
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Pago", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("Impuesto")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Monto")
-                        .HasColumnType("real");
-
-                    b.Property<int>("NumComprobante")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaisId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PasajeroId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ReservaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoComprobante")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaisId");
-
-                    b.HasIndex("PasajeroId");
-
-                    b.HasIndex("ReservaId");
-
-                    b.ToTable("Pagos");
-                });
-
             modelBuilder.Entity("FlightsManager.Models.Vuelos.Pais", b =>
                 {
                     b.Property<int>("Id")
@@ -190,7 +146,7 @@ namespace FlightsManager.Migrations
                     b.ToTable("Paises");
                 });
 
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Reserva", b =>
+            modelBuilder.Entity("FlightsManager.Models.Vuelos.Reservas", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,17 +154,17 @@ namespace FlightsManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<float>("Costo")
-                        .HasColumnType("real");
+                    b.Property<string>("PasajeroId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Observacion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("VueloId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PasajeroId");
+
+                    b.HasIndex("VueloId");
 
                     b.ToTable("Reservas");
                 });
@@ -221,6 +177,9 @@ namespace FlightsManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AsientoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Clase")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -229,6 +188,8 @@ namespace FlightsManager.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AsientoId");
 
                     b.ToTable("Tarifas");
                 });
@@ -241,10 +202,10 @@ namespace FlightsManager.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AeropuertoId")
+                    b.Property<int>("AeropuertoDestinoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AsientoId")
+                    b.Property<int>("AeropuertoPartidaId")
                         .HasColumnType("int");
 
                     b.Property<int>("AvionId")
@@ -253,23 +214,18 @@ namespace FlightsManager.Migrations
                     b.Property<int>("HorarioId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReservaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TarifaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AeropuertoId");
+                    b.HasIndex("AeropuertoDestinoId");
 
-                    b.HasIndex("AsientoId");
+                    b.HasIndex("AeropuertoPartidaId");
 
                     b.HasIndex("AvionId");
 
                     b.HasIndex("HorarioId");
-
-                    b.HasIndex("ReservaId");
 
                     b.HasIndex("TarifaId");
 
@@ -537,43 +493,46 @@ namespace FlightsManager.Migrations
                     b.Navigation("Aerolinea");
                 });
 
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Pago", b =>
+            modelBuilder.Entity("FlightsManager.Models.Vuelos.Reservas", b =>
                 {
-                    b.HasOne("FlightsManager.Models.Vuelos.Pais", "Pais")
-                        .WithMany()
-                        .HasForeignKey("PaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FlightsManager.Models.User", "Pasajero")
                         .WithMany()
                         .HasForeignKey("PasajeroId");
 
-                    b.HasOne("FlightsManager.Models.Vuelos.Reserva", "Reserva")
+                    b.HasOne("FlightsManager.Models.Vuelos.Vuelo", "Vuelo")
                         .WithMany()
-                        .HasForeignKey("ReservaId")
+                        .HasForeignKey("VueloId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Pais");
 
                     b.Navigation("Pasajero");
 
-                    b.Navigation("Reserva");
+                    b.Navigation("Vuelo");
                 });
 
-            modelBuilder.Entity("FlightsManager.Models.Vuelos.Vuelo", b =>
+            modelBuilder.Entity("FlightsManager.Models.Vuelos.Tarifa", b =>
                 {
-                    b.HasOne("FlightsManager.Models.Vuelos.Aeropuerto", "Aeropuerto")
-                        .WithMany()
-                        .HasForeignKey("AeropuertoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FlightsManager.Models.Vuelos.Asiento", "Asiento")
                         .WithMany()
                         .HasForeignKey("AsientoId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asiento");
+                });
+
+            modelBuilder.Entity("FlightsManager.Models.Vuelos.Vuelo", b =>
+                {
+                    b.HasOne("FlightsManager.Models.Vuelos.Aeropuerto", "AeropuertoDestino")
+                        .WithMany()
+                        .HasForeignKey("AeropuertoDestinoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FlightsManager.Models.Vuelos.Aeropuerto", "AeropuertoPartida")
+                        .WithMany()
+                        .HasForeignKey("AeropuertoPartidaId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("FlightsManager.Models.Vuelos.Avion", "Avion")
@@ -588,27 +547,19 @@ namespace FlightsManager.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlightsManager.Models.Vuelos.Reserva", "Reserva")
-                        .WithMany()
-                        .HasForeignKey("ReservaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FlightsManager.Models.Vuelos.Tarifa", "Tarifa")
                         .WithMany()
                         .HasForeignKey("TarifaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Aeropuerto");
+                    b.Navigation("AeropuertoDestino");
 
-                    b.Navigation("Asiento");
+                    b.Navigation("AeropuertoPartida");
 
                     b.Navigation("Avion");
 
                     b.Navigation("Horario");
-
-                    b.Navigation("Reserva");
 
                     b.Navigation("Tarifa");
                 });
