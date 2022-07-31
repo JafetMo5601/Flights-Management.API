@@ -35,5 +35,110 @@ namespace FlightsManager.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
             }
         }
+
+        [HttpGet]
+        [Route("asiento")]
+        public async Task<IActionResult> GetAsientoById(int asientoId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAsientoById(asientoId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("avion")]
+        public async Task<IActionResult> GetAvionById(int avionId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAvionById(avionId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("aerolinea")]
+        public async Task<IActionResult> GetAerolineaById(int aerolineaId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAerolineaById(aerolineaId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("aeropuerto")]
+        public async Task<IActionResult> GetAeropuestoById(int aeropuertoId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAeropuertoById(aeropuertoId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("tarifa")]
+        public async Task<IActionResult> GetTarifaById(int tarifaId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetTarifaById(tarifaId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
     }
 }
