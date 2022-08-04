@@ -6,16 +6,16 @@ namespace FlightsManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservasController : ControllerBase
+    public class PagosController : ControllerBase
     {
         readonly IReservasRepository _reservasRepository;
 
-        public ReservasController(IReservasRepository reservasRepository)
+        public PagosController(IReservasRepository reservasRepository)
         {
             _reservasRepository = reservasRepository;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("reservas")]
         public async Task<IActionResult> GetReservas()
         {
@@ -127,6 +127,6 @@ namespace FlightsManager.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor: " + ex.Message);
             }
-        }
+        }*/
     }
 }

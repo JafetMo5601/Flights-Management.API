@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightsManager.Repositories
 {
-    public class ReservasRepository : IReservasRepository
+    public class PagosRepository : IPagosRepository
     {
-        public ReservasRepository (ApplicationDBContext context)
+        public PagosRepository(ApplicationDBContext context)
         {
             _context = context;
         }
 
         readonly ApplicationDBContext _context;
 
-
-        public async Task<List<Reservas>?> GetAllReservas()
+        /*
+        public async Task<List<Reservas>?> GetAllPagos()
         {
             var reservas = await(from x in _context.Reservas select x)
                                 .Include(x => x.Vuelo.Avion)
@@ -35,7 +35,7 @@ namespace FlightsManager.Repositories
             return null;
         }
 
-        public async Task<Reservas?> GetReservaById(int reservaId)
+        public async Task<Reservas?> GetPagoById(int reservaId)
         {
             var reserva = await(from a in _context.Reservas
                                 where a.Id == reservaId
@@ -186,6 +186,6 @@ namespace FlightsManager.Repositories
 
             return null;
 
-        }
+        }*/
     }
 }
