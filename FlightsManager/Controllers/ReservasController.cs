@@ -72,7 +72,7 @@ namespace FlightsManager.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("reserva-delete")]
         public async Task<IActionResult> DeleteReserva(int reservaId)
         {
