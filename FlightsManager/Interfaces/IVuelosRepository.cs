@@ -1,4 +1,6 @@
-﻿using FlightsManager.Models.Vuelos;
+﻿using FlightsManager.Models;
+using FlightsManager.Models.ViewModels;
+using FlightsManager.Models.Vuelos;
 
 namespace FlightsManager.Interfaces
 {
@@ -17,5 +19,7 @@ namespace FlightsManager.Interfaces
         Task<List<Tarifa>?> GetAllTarifas();
         Task<Horario?> GetHorarioId(int horarioId);
         Task<List<Horario>?> GetAllHorarios();
+        Task<Response> InsertVuelo(InsertVuelo model);
+        Task<List<Vuelo>?> GetFutureFlights();
     }
 }

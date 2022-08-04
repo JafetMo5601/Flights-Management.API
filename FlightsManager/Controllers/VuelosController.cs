@@ -1,4 +1,5 @@
 ﻿using FlightsManager.Interfaces;
+using FlightsManager.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,27 @@ namespace FlightsManager.Controllers
             try
             {
                 var response = await _vuelosRepository.GetAllVuelos();
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("next-vuelos")]
+        public async Task<IActionResult> GetFutureVuelos()
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetFutureFlights();
 
                 if (response == null)
                 {
@@ -274,6 +296,27 @@ namespace FlightsManager.Controllers
             try
             {
                 var response = await _vuelosRepository.GetHorarioId(horarioId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpPost]
+        [Route("vuelo")]
+        public async Task<IActionResult> CreateVuelo(InsertVuelo model)
+        {
+            try
+            {
+                var response = await _vuelosRepository.InsertVuelo(model);
 
                 if (response == null)
                 {
