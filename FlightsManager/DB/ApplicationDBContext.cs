@@ -40,7 +40,6 @@ namespace FlightsManager.DB
                 .HasOne(v => v.AeropuertoPartida)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-
         }
 
     }

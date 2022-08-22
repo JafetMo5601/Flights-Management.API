@@ -230,7 +230,31 @@ namespace FlightsManager.Repositories
             return null;
         }
 
-        public async Task<Response> InsertVuelo(InsertVuelo model)
+        public async Task<Vuelo> GetVueloById(int vueloId)
+        {
+            Vuelo? vuelo = await (from v in _context.Vuelos
+                                  where v.Id == vueloId
+                                  select v)
+                                  .Include(v => v.AeropuertoPartida)
+                                  .Include(v => v.AeropuertoPartida.Pais)
+                                  .Include(v => v.AeropuertoDestino)
+                                  .Include(v => v.AeropuertoDestino.Pais)
+                                  .Include(v => v.Tarifa)
+                                  .Include(v => v.Tarifa.Asiento)
+                                  .Include(v => v.Horario)
+                                  .Include(v => v.Avion)
+                                  .Include(v => v.Avion.Aerolinea)
+                                  .FirstOrDefaultAsync();
+
+            if (vuelo != null)
+            {
+                return vuelo;
+            }
+
+            return null;
+        }
+
+            public async Task<Response> InsertVuelo(InsertVuelo model)
         {
             Avion? avion = await (from a in _context.Aviones
                                   where a.Id == model.IdAvion
@@ -286,6 +310,21 @@ namespace FlightsManager.Repositories
                     Message = "Creacion de reserva fallida: " + ex.Message
                 };
             }
+        }
+
+        public async Task<List<Aeropuerto>> GetAirportExcept(string airportName)
+        {
+            var airports = await (from p in _context.Aeropuertos
+                                where p.Nombre != airportName
+                                  select p)
+                                .Include(p => p.Pais)
+                                .ToListAsync();
+
+            if (airports.Any())
+            {
+                return airports;
+            }
+            return null;
         }
     }
 }

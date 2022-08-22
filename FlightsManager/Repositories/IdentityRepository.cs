@@ -1,8 +1,9 @@
-﻿using FlightsManager.Interfaces;
+﻿using FlightsManager.DB;
+using FlightsManager.Interfaces;
 using FlightsManager.Models;
 using FlightsManager.Utils;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,20 +16,36 @@ namespace FlightsManager.Repositories
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private IPaisRepository _paisRepository;
+        private readonly ApplicationDBContext _context;
         private AuthUtils _authUtils;
 
         public IdentityRepository(
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             IPaisRepository paisRepository,
+            ApplicationDBContext context,
             IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _paisRepository = paisRepository;
+            _context = context;
 
             _authUtils = new AuthUtils(_userManager, _roleManager, _configuration);
+        }
+
+        public async Task<User> GetUserInfo(string userId)
+        {
+            var user = await (from u in _context.Users
+                              where u.UserId == userId
+                              select u).FirstOrDefaultAsync();
+
+            if (user == null) 
+            {
+                return null;
+            }
+            return user;
         }
 
         public async Task<Response> RegisterNewUser(string Role, RegisterModel model)
@@ -100,6 +117,7 @@ namespace FlightsManager.Repositories
                     Expiration = token.ValidTo,
                     Role = userRoleStored,
                     EmailConfirmed = user.EmailConfirmed,
+                    UserId = user.UserId,
                 };
             }
             return null;

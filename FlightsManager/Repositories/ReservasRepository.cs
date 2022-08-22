@@ -41,10 +41,14 @@ namespace FlightsManager.Repositories
                                 where a.Id == reservaId
                                 select a)
                                 .Include(x => x.Vuelo.Avion)
+                                .Include(x => x.Vuelo.Avion.Aerolinea)
                                 .Include(x => x.Vuelo.AeropuertoPartida)
+                                .Include(x => x.Vuelo.AeropuertoPartida.Pais)
                                 .Include(x => x.Vuelo.AeropuertoDestino)
+                                .Include(x => x.Vuelo.AeropuertoDestino.Pais)
                                 .Include(x => x.Vuelo.Horario)
                                 .Include(x => x.Vuelo.Tarifa)
+                                .Include(x => x.Vuelo.Tarifa.Asiento)
                                 .Include(x => x.Pasajero.Country)
                                 .FirstAsync();
 
@@ -64,7 +68,7 @@ namespace FlightsManager.Repositories
                                  select a).FirstOrDefaultAsync();
 
             User? user = await (from a in _context.Users
-                               where a.Id == pasajeroId
+                               where a.UserId == pasajeroId
                                select a).FirstOrDefaultAsync();
 
 
@@ -156,11 +160,11 @@ namespace FlightsManager.Repositories
         public async Task<List<Reservas>?> GetReservasbyVuelo(int vueloId)
         {
             var reservas = await(from a in _context.Reservas
-                              where a.Vuelo.Id == vueloId
-                              select a)
-                               .Include(x => x.Vuelo)
-                               .Include(x => x.Pasajero)
-                               .ToListAsync();
+                                 where a.Vuelo.Id == vueloId
+                                 select a)
+                                 .Include(x => x.Vuelo)
+                                .Include(x => x.Pasajero)
+                                .ToListAsync();
 
             if (reservas != null)
             {
@@ -176,6 +180,14 @@ namespace FlightsManager.Repositories
                                  where a.Pasajero.UserId == userId
                                  select a)
                                .Include(x => x.Vuelo)
+                               .Include(x => x.Vuelo.AeropuertoDestino)
+                               .Include(x => x.Vuelo.AeropuertoDestino.Pais)
+                               .Include(x => x.Vuelo.AeropuertoPartida)
+                               .Include(x => x.Vuelo.AeropuertoPartida.Pais)
+                               .Include(x => x.Vuelo.Horario)
+                               .Include(x => x.Vuelo.Avion)
+                               .Include(x => x.Vuelo.Avion.Aerolinea)
+                               .Include(x => x.Vuelo.Tarifa)
                                .Include(x => x.Pasajero)
                                .ToListAsync();
 
@@ -185,7 +197,58 @@ namespace FlightsManager.Repositories
             }
 
             return null;
+        }
 
+        public async Task<List<Reservas>?> GetNextReservasbyUsuario(string userId)
+        {
+            var reservas = await (from a in _context.Reservas
+                                  where a.Pasajero.UserId == userId 
+                                  && a.Vuelo.Horario.HoraPartida > DateTime.Now
+                                  select a)
+                                  .Include(x => x.Vuelo)
+                                  .Include(x => x.Vuelo.AeropuertoDestino)
+                                  .Include(x => x.Vuelo.AeropuertoDestino.Pais)
+                                  .Include(x => x.Vuelo.AeropuertoPartida)
+                                  .Include(x => x.Vuelo.AeropuertoPartida.Pais)
+                                  .Include(x => x.Vuelo.Horario)
+                                  .Include(x => x.Vuelo.Avion)
+                                  .Include(x => x.Vuelo.Avion.Aerolinea)
+                                  .Include(x => x.Vuelo.Tarifa)
+                                  .Include(x => x.Pasajero)
+                                  .ToListAsync();
+
+            if (reservas != null)
+            {
+                return reservas;
+            }
+
+            return null;
+        }
+
+        public async Task<List<Reservas>?> GetPastReservasbyUsuario(string userId)
+        {
+            var reservas = await (from a in _context.Reservas
+                                  where a.Pasajero.UserId == userId
+                                  && a.Vuelo.Horario.HoraPartida < DateTime.Now
+                                  select a)
+                                  .Include(x => x.Vuelo)
+                                  .Include(x => x.Vuelo.AeropuertoDestino)
+                                  .Include(x => x.Vuelo.AeropuertoDestino.Pais)
+                                  .Include(x => x.Vuelo.AeropuertoPartida)
+                                  .Include(x => x.Vuelo.AeropuertoPartida.Pais)
+                                  .Include(x => x.Vuelo.Horario)
+                                  .Include(x => x.Vuelo.Avion)
+                                  .Include(x => x.Vuelo.Avion.Aerolinea)
+                                  .Include(x => x.Vuelo.Tarifa)
+                                  .Include(x => x.Pasajero)
+                                  .ToListAsync();
+
+            if (reservas != null)
+            {
+                return reservas;
+            }
+
+            return null;
         }
     }
 }

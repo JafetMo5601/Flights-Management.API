@@ -128,5 +128,45 @@ namespace FlightsManager.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor: " + ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("next-reserva-usuario")]
+        public async Task<IActionResult> GetNextReservasbyUser(string userId)
+        {
+            try
+            {
+                var response = await _reservasRepository.GetNextReservasbyUsuario(userId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor: " + ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("past-reserva-usuario")]
+        public async Task<IActionResult> GetPastReservasbyUser(string userId)
+        {
+            try
+            {
+                var response = await _reservasRepository.GetPastReservasbyUsuario(userId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor: " + ex.Message);
+            }
+        }
     }
 }

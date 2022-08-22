@@ -75,5 +75,29 @@ namespace FlightsManager.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError, response);
         }
+
+        [HttpGet]
+        [Route("user-info")]
+        public async Task<IActionResult> GetUserInfo(string userId)
+        {
+            var response = await _identityRepository.GetUserInfo(userId);
+
+            try
+            {
+                if (response != null)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error en el servidor al registrar el administrador, contacte a los desarrolladores.");
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, response);
+        }
     }
 }

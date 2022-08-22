@@ -11,5 +11,7 @@ namespace FlightsManager.Interfaces
         Task<Response> DeleteReserva(int reservaId);
         Task<List<Reservas>?> GetReservasbyVuelo(int vueloId);
         Task<List<Reservas>?> GetReservasbyUsuario(string userId);
+        Task<List<Reservas>?> GetNextReservasbyUsuario(string userId);
+        Task<List<Reservas>?> GetPastReservasbyUsuario(string userId);
     }
 }

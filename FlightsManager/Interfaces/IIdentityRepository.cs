@@ -6,5 +6,6 @@ namespace FlightsManager.Interfaces
     {
         Task<Response> RegisterNewUser(string Role, RegisterModel model);
         Task<LoginResponse> LoginUser(LoginModel model);
+        Task<User> GetUserInfo(string userId);
     }
 }

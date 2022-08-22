@@ -310,6 +310,28 @@ namespace FlightsManager.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("vuelo-id")]
+        public async Task<IActionResult> GetVueloById(int vueloId)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetVueloById(vueloId);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+
         [HttpPost]
         [Route("vuelo")]
         public async Task<IActionResult> CreateVuelo(InsertVuelo model)
@@ -317,6 +339,27 @@ namespace FlightsManager.Controllers
             try
             {
                 var response = await _vuelosRepository.InsertVuelo(model);
+
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Hubo un error en el servidor.");
+            }
+        }
+
+        [HttpGet]
+        [Route("airport-except")]
+        public async Task<IActionResult> GetAirportsWithout(string airportName)
+        {
+            try
+            {
+                var response = await _vuelosRepository.GetAirportExcept(airportName);
 
                 if (response == null)
                 {

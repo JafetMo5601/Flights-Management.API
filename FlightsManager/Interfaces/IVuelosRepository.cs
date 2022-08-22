@@ -21,5 +21,7 @@ namespace FlightsManager.Interfaces
         Task<List<Horario>?> GetAllHorarios();
         Task<Response> InsertVuelo(InsertVuelo model);
         Task<List<Vuelo>?> GetFutureFlights();
+        Task<Vuelo> GetVueloById(int vueloId);
+        Task<List<Aeropuerto>> GetAirportExcept(string airportName);
     }
 }
