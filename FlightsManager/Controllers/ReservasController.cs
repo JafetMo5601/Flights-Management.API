@@ -1,4 +1,5 @@
 ﻿using FlightsManager.Interfaces;
+using FlightsManager.Models.MailModels;
 using FlightsManager.Models.Vuelos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,18 @@ namespace FlightsManager.Controllers
     [ApiController]
     public class ReservasController : ControllerBase
     {
+        readonly ICartero Cartero;
         readonly IReservasRepository _reservasRepository;
+        readonly IIdentityRepository _identityRepository;
+        readonly IVuelosRepository _vuelosRepository;
 
-        public ReservasController(IReservasRepository reservasRepository)
+        public ReservasController(ICartero cartero, IReservasRepository reservasRepository,
+            IIdentityRepository identityRepository, IVuelosRepository vuelosRepository)
         {
+            Cartero = cartero;
             _reservasRepository = reservasRepository;
+            _identityRepository = identityRepository;
+            _vuelosRepository = vuelosRepository;
         }
 
         [HttpGet]
@@ -64,6 +72,29 @@ namespace FlightsManager.Controllers
 
             if (response.Status == "Success")
             {
+                var pasajero = await _identityRepository.GetUserInfo(pasajeroId);
+                var vuelo = await _vuelosRepository.GetVueloById(vueloId);
+
+                Cartero.Enviar
+                    (
+                        new CorreoElectronico
+                        {
+                            Destinatario = pasajero.Email,
+                            Asunto = $"Reserva Confirmada Exitosamente - Vuelo {vuelo.Id}",
+                            Cuerpo = $"Estimado(a) {pasajero.Name}, \nLe informamos que se ha confirmado exitosamente su reserva con los siguientes detalles: \n\n" +
+                            $"Vuelo numero: {vuelo.Id} \n" +
+                            $"Aerolinea: {vuelo.Avion.Aerolinea.Nombre} \n" +
+                            $"Avion: {vuelo.Avion.Id} - {vuelo.Avion.Tipo} \n" +
+                            $"Hora de partida: {vuelo.Horario.HoraPartida} \n" +
+                            $"Pais de partida: {vuelo.AeropuertoPartida.Pais.Nombre}  \n" +
+                            $"Aeropuerto de partida: {vuelo.AeropuertoPartida.Nombre}   \n" +
+                            $"Hora de llegada: {vuelo.Horario.HoraLlegada}  \n" +
+                            $"Pais de destino: {vuelo.AeropuertoDestino.Pais.Nombre}  \n" +
+                            $"Aeropuerto de destino: {vuelo.AeropuertoDestino.Nombre}   \n\n" +
+                            $"Gracias por preferirnos."
+                        }
+                    );
+
                 return Ok(response);
             }
             else

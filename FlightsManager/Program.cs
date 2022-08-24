@@ -1,6 +1,7 @@
 using FlightsManager.DB;
 using FlightsManager.Interfaces;
 using FlightsManager.Models;
+using FlightsManager.Models.MailModels;
 using FlightsManager.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,9 @@ builder.Services.AddScoped<IPagosRepository, PagosRepository>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddSingleton<ICartero, Cartero>();
+builder.Services.Configure<ConfiguracionSmtp>(configuration.GetSection("ConfiguracionSmtp"));
 
 builder.Services.AddAuthentication(options =>
 {
