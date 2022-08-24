@@ -1,18 +1,26 @@
-﻿using FlightsManager.Interfaces;
+﻿using FlightsManager.Application.Contracts;
+using FlightsManager.Domain.Models.Entities;
+using FlightsManager.Infrastructure.DB;
+using FlightsManager.Infrastructure.Repository;
+using FlightsManager.Infrastructure.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlightsManager.Controllers
+namespace FlightsManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PaisController : ControllerBase
     {
-        private readonly IPaisRepository _paisRepository;
+        //private readonly IPaisRepository _paisRepository;
+        readonly IRepository<Pais> _repositoryPais;
 
-        public PaisController(IPaisRepository paisRepository)
+
+        public PaisController(/*IPaisRepository paisRepository,*/ 
+            IUnitOfWork<ApplicationDBContext> unitOfWork)
         {
-            _paisRepository = paisRepository;
+            //_paisRepository = paisRepository;
+            _repositoryPais = unitOfWork.Repository<Pais>();
         }
 
         [HttpGet]
@@ -21,7 +29,8 @@ namespace FlightsManager.Controllers
         {
             try
             {
-                var response = await _paisRepository.GetPaises();
+                //var response = await _paisRepository.GetPaises();
+                var response = _repositoryPais.Listar();
 
                 if (response == null)
                 {
@@ -42,7 +51,8 @@ namespace FlightsManager.Controllers
         {
             try
             {
-                var response = await _paisRepository.GetPaisesExcept(nombrePais);
+                //var response = await _paisRepository.GetPaisesExcept(nombrePais);
+                var response = _repositoryPais.Listar(x => x.Nombre != nombrePais);
 
                 if (response == null)
                 {

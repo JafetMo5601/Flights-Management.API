@@ -1,9 +1,12 @@
-﻿using FlightsManager.Interfaces;
-using FlightsManager.Models.MailModels;
-using FlightsManager.Models.Vuelos;
+﻿using FlightsManager.Application.Contracts;
+using FlightsManager.Domain.Models.MailModels;
+using FlightsManager.Domain.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using FlightsManager.Infrastructure.Repository;
+using FlightsManager.Infrastructure.Repository.UnitOfWork;
+using FlightsManager.Infrastructure.DB;
 
-namespace FlightsManager.Controllers
+namespace FlightsManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -30,6 +33,7 @@ namespace FlightsManager.Controllers
             try
             {
                 var response = await _reservasRepository.GetAllReservas();
+                //var response = _repositoryReservas.Listar(propiedadesIncluidas: "Vuelo.Avion,Vuelo.Horario ");
 
                 if (response == null)
                 {
@@ -43,7 +47,7 @@ namespace FlightsManager.Controllers
             }
         }
 
-
+        
         [HttpGet]
         [Route("reserva-id")]
         public async Task<IActionResult> GetReserva(int reservaId)

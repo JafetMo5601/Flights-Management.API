@@ -1,8 +1,10 @@
-using FlightsManager.DB;
-using FlightsManager.Interfaces;
-using FlightsManager.Models;
-using FlightsManager.Models.MailModels;
-using FlightsManager.Repositories;
+using FlightsManager.Application.Contracts;
+using FlightsManager.Domain.Models;
+using FlightsManager.Domain.Models.Entities;
+using FlightsManager.Domain.Models.MailModels;
+using FlightsManager.Infrastructure.DB;
+using FlightsManager.Infrastructure.Repositories;
+using FlightsManager.Infrastructure.Repository.UnitOfWork.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +18,13 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddDbContext<ApplicationDBContext>(
-    options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")), ServiceLifetime.Transient);
+    options => options.UseSqlServer(configuration.GetConnectionString("ConnectionString")), ServiceLifetime.Transient)
+    .AddUnitOfWork<ApplicationDBContext>()
+    .AddRepository<Pais, PaisRepository>();
 
-builder.Services.AddScoped<IPaisRepository, PaisRepository>();
 builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 builder.Services.AddScoped<IVuelosRepository, VuelosRepository>();
-builder.Services.AddScoped<IPaisRepository, PaisRepository>();
+//builder.Services.AddScoped<IPaisRepository, PaisRepository>();
 builder.Services.AddScoped<IReservasRepository, ReservasRepository>();
 builder.Services.AddScoped<IPagosRepository, PagosRepository>();
 

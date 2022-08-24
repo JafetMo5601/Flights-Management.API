@@ -1,9 +1,9 @@
-﻿using FlightsManager.Interfaces;
-using FlightsManager.Models;
+﻿using FlightsManager.Application.Contracts;
+using FlightsManager.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FlightsManager.Controllers
+namespace FlightsManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
